@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Right Click Send to Phone - Chrome Extension To Make Your Life Easier</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/png" href="icon.png">
+</head>
+
+<body>
+  <header>
+    <div class="container">
+      <div class="logo-container">
+        <img src="icon.png" alt="Logo" width="64" height="64">
+      </div>
+      <h1>Right Click Send to Phone</h1>
+      <p>A simple chrome extension that lets you select text and right click send to phone! From any webpage direct to your phone via Slack, Discord, or any custom webhook.</p>
+
+      <a href="https://chrome.google.com/webstore/detail/YOUR_EXTENSION_ID" target="_blank" class="chrome-badge">
+        <img src="chrome_badge.png" alt="Available in the Chrome Web Store" height="58">
+      </a>
+    </div>
+  </header>
+
+  <div class="carousel-container">
+    <div class="carousel-track">
+      <div class="carousel-slide">
+        <img src="promo_mockup.png" alt="Right Click Send to Phone Demo">
+      </div>
+      <div class="carousel-slide">
+        <img src="store_hero_notifications.png" alt="Slack and Discord Notifications">
+      </div>
+      <div class="carousel-slide">
+        <img src="click_to_call_feature.png" alt="Click to Call Feature">
+      </div>
+    </div>
+    <button class="carousel-btn prev-btn" aria-label="Previous slide">&lt;</button>
+    <button class="carousel-btn next-btn" aria-label="Next slide">&gt;</button>
+    <div class="carousel-dots"></div>
+  </div>
+
+  <main>
+    <section id="how-it-works">
+      <div class="container">
+        <h2>How it Works</h2>
+        <div class="steps">
+          <div class="step">
+            <div class="step-number">1</div>
+            <h3>Install</h3>
+            <p>Add the extension to your Chrome browser from the Web Store.</p>
+          </div>
+          <div class="step">
+            <div class="step-number">2</div>
+            <h3>Connect</h3>
+            <p>Choose Slack, Discord, or Custom webhook in settings and connect your account.</p>
+          </div>
+          <div class="step">
+            <div class="step-number">3</div>
+            <h3>Send</h3>
+            <p>Right-click any text or number and select "Right Click Send to Phone".</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="features">
+      <div class="container">
+        <div class="feature-grid">
+          <div>
+            <h2>Seamless Integration</h2>
+            <p>Whether you use Slack for work or Discord for community, we've got you covered. Our extension integrates natively with your favorite platforms.</p>
+            <img src="small_promo_tile.png" alt="Seamless Integration" style="width:100%; border-radius:12px; margin-top: 20px; margin-bottom: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+            <div class="feature-card" style="margin-top: 20px;">
+              <h3>⚡ Click-to-Call</h3>
+              <p>Phone numbers are automatically detected and formatted as clickable links on your phone.</p>
+            </div>
+          </div>
+          <div>
+            <div class="feature-card">
+              <h3>🔒 Privacy First</h3>
+              <p>Your data never touches our servers. Everything is stored locally in your browser and sent directly to your configured webhook.</p>
+            </div>
+            <div class="feature-card" style="margin-top: 20px;">
+              <h3>🚀 Lightning Fast</h3>
+              <p>No bloat, no tracking scripts. Just a lightweight utility that does one thing perfectly.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="setup-guide">
+      <div class="container">
+        <h2>Setup Guide</h2>
+
+        <div class="feature-grid">
+          <div>
+            <h3>Option A: Slack (Recommended)</h3>
+            <p>Perfect for teams and individuals who use Slack daily.</p>
+            <ol>
+              <li>Click the extension icon and open <strong>Options</strong>.</li>
+              <li>Click <strong>Sign in with Slack</strong>.</li>
+              <li>Authorize the app to send messages to yourself.</li>
+              <li>Done!</li>
+            </ol>
+          </div>
+          <div>
+            <h3>Option B: Discord (Manual)</h3>
+            <p>Great for power users who prefer Discord.</p>
+            <ol>
+              <li>Open Discord > Server Settings > Integrations.</li>
+              <li>Create a <strong>New Webhook</strong> and copy the URL.</li>
+              <li>Paste the URL into the extension settings.</li>
+              <li>Done!</li>
+            </ol>
+          </div>
+          <div>
+            <h3>Option C: Custom Webhook</h3>
+            <p>Use any webhook service that accepts JSON POST requests.</p>
+            <ol>
+              <li>Click the extension icon and select <strong>Custom</strong>.</li>
+              <li>Enter your webhook URL (must accept "text" or "content" field).</li>
+              <li>Save settings.</li>
+              <li>Done!</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>made with ❤️ share the ❤️ with a<a href="https://www.paypal.com/donate/?hosted_button_id=9VFG2KJ8HW6EW" style="text-decoration: underline;margin-left:0;" target="_blank"> donation</a> | <a href="privacy.html">Privacy Policy</a> | <a href="https://github.com/jatacid/right-click-send-to-phone" target="_blank">View on GitHub</a></p>
+    </div>
+  </footer>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const track = document.querySelector('.carousel-track');
+      const slides = Array.from(track.children);
+      const nextButton = document.querySelector('.next-btn');
+      const prevButton = document.querySelector('.prev-btn');
+      const dotsContainer = document.querySelector('.carousel-dots');
+
+      let currentSlideIndex = 0;
+
+      // Create dots
+      slides.forEach((_, index) => {
+        const dot = document.createElement('div');
+        dot.classList.add('dot');
+        if (index === 0) dot.classList.add('active');
+        dot.addEventListener('click', () => moveToSlide(index));
+        dotsContainer.appendChild(dot);
+      });
+
+      const dots = Array.from(dotsContainer.children);
+
+      function updateDots(index) {
+        dots.forEach(dot => dot.classList.remove('active'));
+        dots[index].classList.add('active');
+      }
+
+      function updateSlidePositions() {
+        slides.forEach((slide, index) => {
+          slide.classList.remove('active', 'prev', 'next', 'hidden');
+
+          if (index === currentSlideIndex) {
+            slide.classList.add('active');
+          } else if (index === (currentSlideIndex - 1 + slides.length) % slides.length) {
+            slide.classList.add('prev');
+          } else if (index === (currentSlideIndex + 1) % slides.length) {
+            slide.classList.add('next');
+          } else {
+            slide.classList.add('hidden');
+          }
+        });
+      }
+
+      function moveToSlide(index) {
+        currentSlideIndex = index;
+        updateSlidePositions();
+        updateDots(index);
+      }
+
+      nextButton.addEventListener('click', () => {
+        currentSlideIndex = (currentSlideIndex + 1) % slides.length;
+        moveToSlide(currentSlideIndex);
+      });
+
+      prevButton.addEventListener('click', () => {
+        currentSlideIndex = (currentSlideIndex - 1 + slides.length) % slides.length;
+        moveToSlide(currentSlideIndex);
+      });
+
+      // Initialize positions
+      updateSlidePositions();
+
+      // Auto-advance (optional)
+      setInterval(() => {
+        currentSlideIndex = (currentSlideIndex + 1) % slides.length;
+        moveToSlide(currentSlideIndex);
+      }, 5000);
+    });
+  </script>
+</body>
+
+</html>

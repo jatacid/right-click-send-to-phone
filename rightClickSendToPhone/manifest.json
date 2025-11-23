@@ -1,0 +1,31 @@
+{
+  "manifest_version": 3,
+  "name": "Right Click Send to Phone",
+  "version": "1.0",
+  "description": "Send text/links to your phone via Slack, Discord, or other services.",
+  "permissions": [
+    "contextMenus",
+    "storage",
+    "activeTab",
+    "identity"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "icons": {
+    "16": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icon.png",
+      "48": "icon.png",
+      "128": "icon.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.js"
+  }
+}
