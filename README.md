@@ -42,3 +42,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Credits
 
 Made with &hearts; by [Jatacid](https://jatacid.github.io/right-click-send-to-phone/)
+
+Made with ❤️ share the ❤️ with a **[donation](https://www.paypal.com/donate/?hosted_button_id=9VFG2KJ8HW6EW)**

@@ -18,9 +18,8 @@ git add .
 git commit -m "Bump version to $newVersion"
 git push
 
-# Zip the extension
-
-# Zip the extension
+# Zip the extension contents (not the directory itself)
+# Chrome Web Store requires files at root level of zip, not in a subfolder
 
 # Prepare releases folder and zip path
 $releasesDir = "releases"
@@ -29,7 +28,7 @@ if (!(Test-Path $releasesDir)) {
 }
 $zipName = "right-click-send-to-phone-v$newVersion.zip"
 $zipPath = Join-Path $releasesDir $zipName
-Compress-Archive -Path "rightClickSendToPhone" -DestinationPath $zipPath -Force
+Compress-Archive -Path "rightClickSendToPhone\*" -DestinationPath $zipPath -Force
 
 # Commit all changes (including new zip and version bump)
 git add .
