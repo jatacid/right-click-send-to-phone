@@ -1,10 +1,22 @@
 // Remove any existing context menu items first to prevent duplicates
 chrome.contextMenus.removeAll(() => {
-  // Create two context menu items - one for text selection, one for page
+  // Create context menu items
   chrome.contextMenus.create({
     id: "sendTextToPhone",
     title: "Send Text to Phone",
     contexts: ["selection"]
+  });
+
+  chrome.contextMenus.create({
+    id: "sendLinkToPhone",
+    title: "Send Link to Phone",
+    contexts: ["link"]
+  });
+
+  chrome.contextMenus.create({
+    id: "sendImageToPhone",
+    title: "Send Image to Phone",
+    contexts: ["image"]
   });
 
   chrome.contextMenus.create({
@@ -14,9 +26,26 @@ chrome.contextMenus.removeAll(() => {
   });
 });
 
-chrome.contextMenus.onClicked.addListener(function(info, tab) {
-  if (info.menuItemId === "sendTextToPhone" || info.menuItemId === "sendPageToPhone") {
-    chrome.storage.sync.get(['service', 'webhook', 'discordWebhook', 'customWebhook'], function(result) {
+// Helper function to get selected text with formatting via content script
+function getFormattedSelection(tabId) {
+  return new Promise((resolve) => {
+    chrome.tabs.sendMessage(tabId, { action: "getSelection" }, (response) => {
+      if (chrome.runtime.lastError) {
+        // Content script might not be loaded (e.g. on restricted pages or before reload)
+        // Fallback to returning null so caller uses standard selectionText
+        console.log("Could not get formatted selection (content script may be missing):", chrome.runtime.lastError.message);
+        resolve(null);
+      } else {
+        resolve(response ? response.selection : null);
+      }
+    });
+  });
+}
+
+chrome.contextMenus.onClicked.addListener(async function(info, tab) {
+  const validMenuItems = ["sendTextToPhone", "sendPageToPhone", "sendLinkToPhone", "sendImageToPhone"];
+  if (validMenuItems.includes(info.menuItemId)) {
+    chrome.storage.sync.get(['service', 'webhook', 'discordWebhook', 'customWebhook'], async function(result) {
       const service = result.service;
       let webhookUrl;
 
@@ -39,7 +68,13 @@ chrome.contextMenus.onClicked.addListener(function(info, tab) {
       
       // Determine what to send based on which menu item was clicked
       if (info.menuItemId === "sendTextToPhone") {
-        contentToSend = info.selectionText;
+        // Try to get formatted text first
+        const formattedText = await getFormattedSelection(tab.id);
+        contentToSend = formattedText || info.selectionText;
+      } else if (info.menuItemId === "sendLinkToPhone") {
+        contentToSend = info.linkUrl;
+      } else if (info.menuItemId === "sendImageToPhone") {
+        contentToSend = info.srcUrl;
       } else {
         // Send page URL with title
         contentToSend = `${tab.title}\n${tab.url}`;

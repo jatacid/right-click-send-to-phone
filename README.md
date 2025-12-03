@@ -15,6 +15,12 @@
 
 ## Installation
 
+Download and install the extension from the [Chrome Web Store](https://chromewebstore.google.com/detail/right-click-send-to-phone/emckbbdmimagjgcckfofapkoicilncbo).
+
+## Development
+
+To develop or test locally:
+
 1.  Clone this repository.
 2.  Open Chrome and navigate to `chrome://extensions/`.
 3.  Enable "Developer mode" in the top right corner.
